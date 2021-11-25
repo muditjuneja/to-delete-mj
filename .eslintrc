@@ -1,0 +1,33 @@
+{
+   "parser":"babel-eslint",
+   "plugins":[
+      "compat",
+      "jest",
+      "prettier"
+   ],
+   "parserOptions":{
+      "ecmaVersion":10,
+      "sourceType":"module"
+   },
+   "settings":{
+      "polyfills":[
+         "Object.values",
+         "Promise"
+      ]
+   },
+   "env":{
+      "es6":true,
+      "browser":true,
+      "node":true,
+      "jest/globals":true
+   },
+   "extends":[
+      "eslint:recommended",
+      "plugin:compat/recommended",
+      "plugin:jest/recommended",
+      "plugin:prettier/recommended"
+   ],
+   "rules":{
+      "no-console":"warn"
+   }
+}

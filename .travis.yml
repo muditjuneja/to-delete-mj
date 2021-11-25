@@ -1,0 +1,25 @@
+language: python
+dist: xenial
+env:
+  global:
+    - REPO===CHANGE ME==
+    - IMAGE===CHANGE ME==
+    - NOMAD_DOMAIN===CHANGE ME==-nomad.bainpov.com
+python:
+- 3.7
+services:
+install:
+before_script:
+- docker login docker.pkg.github.com -u $GITHUB_USER -p $GITHUB_KEY
+- git clone https://$GITHUB_USER:$GITHUB_KEY@github.com/Bain/Bain-CD-Tool.git deploy/tool
+- chmod -R +x ./deploy
+- pip install requests
+
+jobs:
+  include:
+    - stage: prod_build
+      if: tag IS blank AND branch = master AND type = push
+      script: ./deploy/build-ci-prod.sh $IMAGE $REPO || travis_terminate 1
+    - stage: prod_deploy
+      if: tag =~ /^deploy-*/
+      script: ./deploy/tool/app_deploy_scripts/deploy.sh deploy $NOMAD_DOMAIN $NOMAD_TOKEN $TRAVIS_BRANCH $GITHUB_KEY $GITHUB_USER || travis_terminate 1
